@@ -1,0 +1,67 @@
+[meta]
+; Name: Win2Win - Replace one string with another
+; Encoding: Unknown Windows encoding
+; Author: Pedro
+; Version: 1.0
+
+; Sample conversion table for string-string encoding.
+
+[settings]
+number-base = dec
+errorlevel = 0
+
+[dictionary]
+[string-string]
+001-A
+002-B
+003-C
+004-D
+005-E
+006-F
+007-G
+008-H
+009-I
+010-J
+011-K
+012-L
+013-M
+014-N
+015-O
+016-P
+017-Q
+018-R
+019-S
+020-T
+021-U
+022-V
+023-W
+024-X
+025-Y
+026-Z
+
+101-a
+102-b
+103-c
+104-d
+105-e
+106-f
+107-g
+108-h
+109-i
+110-j
+111-k
+112-l
+113-m
+114-n
+115-o
+116-p
+117-q
+118-r
+119-s
+120-t
+121-u
+122-v
+123-w
+124-x
+125-y
+126-z

@@ -1,0 +1,38 @@
+[meta]
+; Name: ZX(Win) for BasinC
+; Encoding: ZX(Win) for BasinC
+; Author: Pedro
+; Version: 1.0
+
+; Sample conversion table for string-string encoding.
+; Created for Kain, a well-known author of text-based games for the ZX Spectrum [https://petrkain.pohroma.de/]
+; User-defined graphic characters (UDG) extend the Czech character set. There are 21 such characters in total (ZX 48, ZX 128 has one fewer) and they correspond to the predefined characters "a" through "u".
+; BASIN C, which is used as a development tool for the ZX, uses the "\" character during conversion if the source is a TXT (*.bas) file. For example, "\a" is converted to the character corresponding to "graphical a", or "#200" is converted to the character with code 200.
+
+[settings]
+
+[dictionary]
+
+[separator -]
+[string-string]
+\a-á
+\b-
+\c-è
+\d-ï
+\e-é
+\f-È
+\g-
+\h-ı
+\i-í
+\j-ú
+\k-Š
+\l-Ú
+\m-Ï
+\n-ò
+\o-ó
+\p-Ø
+\q-ì
+\r-ø
+\s-š
+\t-
+\u-ù

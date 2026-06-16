@@ -1,0 +1,36 @@
+[meta]
+; Name: Win2Win - ASCII 7-bit (Remove Diacritics)
+; Encoding: Unknown Windows encoding
+; Author: Pedro
+; Version: 1.0
+
+; Sample conversion table for changing the code page. (US-ASCII 7-bit)
+; An easy way to remove diacritical marks.
+
+[settings]
+number-base = dec
+errorlevel = 0
+
+code-page = 20127
+
+; [https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers]
+; 0 - The system default Windows ANSI code page
+; 437 - OEM United States
+; 500 - IBM EBCDIC International
+; 850 - OEM Multilingual Latin 1; Western European (DOS)
+; 852 - OEM Latin 2; Central European (DOS)
+; 855 - OEM Cyrillic (primarily Russian)
+; 858 - OEM Multilingual Latin 1 + Euro symbol
+; 870 - IBM EBCDIC Multilingual/ROECE (Latin 2); IBM EBCDIC Multilingual Latin 2
+; 1047 - IBM EBCDIC Latin 1/Open System
+; 1141 - IBM EBCDIC Germany (20273 + Euro symbol); IBM EBCDIC (Germany-Euro)
+; 1146 - IBM EBCDIC United Kingdom (20285 + Euro symbol); IBM EBCDIC (UK-Euro)
+; 1148 - IBM EBCDIC International (500 + Euro symbol); IBM EBCDIC (International-Euro)
+; 1250 - ANSI Central European; Central European (Windows)
+; 1251 - ANSI Cyrillic; Cyrillic (Windows)
+; 1252 - ANSI Latin 1; Western European (Windows)
+; 20127 - US-ASCII (7-bit)
+; 28591 - ISO 8859-1 Latin 1; Western European (ISO)
+; 28592 - Central European; Central European (ISO)
+; 65000 - UTF-7
+; 65001 - UTF-8

@@ -1,0 +1,12 @@
+[meta]
+; Name: Win2Win - ToUpper
+; Encoding: Unknown Windows encoding
+; Author: Pedro
+; Version: 1.0
+
+; An easy way to convert uppercase letters to uppercase.
+
+[settings]
+number-base = dec
+errorlevel = 0
+toupper = true

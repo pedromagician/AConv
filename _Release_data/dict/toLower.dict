@@ -1,0 +1,12 @@
+[meta]
+; Name: Win2Win - ToLower
+; Encoding: Unknown Windows encoding
+; Author: Pedro
+; Version: 1.0
+
+; An easy way to convert uppercase letters to lowercase.
+
+[settings]
+number-base = dec
+errorlevel = 0
+tolower = true
