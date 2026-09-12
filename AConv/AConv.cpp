@@ -120,12 +120,12 @@ int _tmain(int _argc, _TCHAR* _argv[])
 	}
 
 	if (inputFileName.empty() == false && inputClipboard == true) {
-		wprintf(L"Error – input from file or clipboard?\n");
+		wprintf(L"Error - input from file or clipboard?\n");
 		return 1;
 	}
 
 	if (outputFileName.empty() == false && outputClipboard == true) {
-		wprintf(L"Error – save to file or clipboard?\n");
+		wprintf(L"Error - save to file or clipboard?\n");
 		return 1;
 	}
 
