@@ -615,14 +615,14 @@ void CreateDefaultKeyMapHelper(map<BYTE, wstring>& _km)
 
 	// Control range (0-31): CTRL key combinations mapped to Atari-style symbols.
 	static const pair<BYTE, wstring> controlChars[] = {
-		{0,  L"CTRL+, ♥"}, {1,  L"CTRL+a ├"}, {2,  L"CTRL+b │"}, {3,  L"CTRL+c ┘"},
-		{4,  L"CTRL+d ┤"}, {5,  L"CTRL+e ┐"}, {6,  L"CTRL+f ◄"}, {7,  L"CTRL+g ►"},
-		{8,  L"CTRL+h ▲"}, {9,  L"CTRL+i ░"}, {10, L"CTRL+j ▼"}, {11, L"CTRL+k ▒"},
-		{12, L"CTRL+l ▓"}, {13, L"CTRL+m ═"}, {14, L"CTRL+n ▬"}, {15, L"CTRL+o █"},
-		{16, L"CTRL+p ☺"}, {17, L"CTRL+q ┌"}, {18, L"CTRL+r ─"}, {19, L"CTRL+s ┼"},
-		{20, L"CTRL+t •"}, {21, L"CTRL+u ≈"}, {22, L"CTRL+v ║"}, {23, L"CTRL+w ┬"},
-		{24, L"CTRL+x ┴"}, {25, L"CTRL+y ▐"}, {26, L"CTRL+z └"}, {27, L"ESC ☼"},
-		{28, L"up arrow"}, {29, L"down arrow"}, {30, L"left arrow"}, {31, L"right arrow"},
+		{(BYTE)0,  L"CTRL+, ♥"}, {(BYTE)1,  L"CTRL+a ├"}, {(BYTE)2,  L"CTRL+b │"}, {(BYTE)3,  L"CTRL+c ┘"},
+		{(BYTE)4,  L"CTRL+d ┤"}, {(BYTE)5,  L"CTRL+e ┐"}, {(BYTE)6,  L"CTRL+f ◄"}, {(BYTE)7,  L"CTRL+g ►"},
+		{(BYTE)8,  L"CTRL+h ▲"}, {(BYTE)9,  L"CTRL+i ░"}, {(BYTE)10, L"CTRL+j ▼"}, {(BYTE)11, L"CTRL+k ▒"},
+		{(BYTE)12, L"CTRL+l ▓"}, {(BYTE)13, L"CTRL+m ═"}, {(BYTE)14, L"CTRL+n ▬"}, {(BYTE)15, L"CTRL+o █"},
+		{(BYTE)16, L"CTRL+p ☺"}, {(BYTE)17, L"CTRL+q ┌"}, {(BYTE)18, L"CTRL+r ─"}, {(BYTE)19, L"CTRL+s ┼"},
+		{(BYTE)20, L"CTRL+t •"}, {(BYTE)21, L"CTRL+u ≈"}, {(BYTE)22, L"CTRL+v ║"}, {(BYTE)23, L"CTRL+w ┬"},
+		{(BYTE)24, L"CTRL+x ┴"}, {(BYTE)25, L"CTRL+y ▐"}, {(BYTE)26, L"CTRL+z └"}, {(BYTE)27, L"ESC ☼"},
+		{(BYTE)28, L"up arrow"}, {(BYTE)29, L"down arrow"}, {(BYTE)30, L"left arrow"}, {(BYTE)31, L"right arrow"},
 	};
 	for (const auto& kv : controlChars)
 		_km.insert(kv);
@@ -631,11 +631,11 @@ void CreateDefaultKeyMapHelper(map<BYTE, wstring>& _km)
 	// Atari-specific overrides. Byte 45 ('-') is intentionally left out,
 	// because '-' is used as the dictionary separator elsewhere.
 	static const map<BYTE, wstring> printableOverrides = {
-		{96,  L"CTRL+. ♦"},
-		{123, L"CTRL+; ♣"},
-		{125, L"CLEAR"},
-		{126, L"DELETE"},
-		{127, L"TAB \t"},
+		{(BYTE)96,  L"CTRL+. ♦"},
+		{(BYTE)123, L"CTRL+; ♣"},
+		{(BYTE)125, L"CLEAR"},
+		{(BYTE)126, L"DELETE"},
+		{(BYTE)127, L"TAB \t"},
 	};
 	for (BYTE b = 32; b < 128; ++b) {
 		if (b == 45) continue;
