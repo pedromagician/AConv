@@ -2,60 +2,83 @@
 
 #include "Matcher.h"
 
-const MappingEntry* Matcher::MatchBytes(const vector<MappingEntry>& _map, const vector<unsigned char>& _data, size_t _pos)
+MatchIndex Matcher::BuildIndex(const vector<MappingEntry>& _map)
 {
-	const MappingEntry* best = nullptr;
-	size_t bestLen = 0;
+	MatchIndex index;
 
-	for (size_t i = 0; i < _map.size(); ++i) {
-		const MappingEntry& m = _map[i];
-		if (m.srcKind != TOKEN_KIND::BYTE_SEQUENCE)
-			continue;
-		size_t len = m.srcBytes.size();
-		if (len == 0 || _pos + len > _data.size())
-			continue;
-		bool ok = true;
-		for (size_t j = 0; j < len; ++j) {
-			if (_data[_pos + j] != m.srcBytes[j]) {
-				ok = false;
-				break;
-			}
+	for (const auto& m : _map) {
+		if (m.srcKind == TOKEN_KIND::BYTE_SEQUENCE) {
+			if (!m.srcBytes.empty())
+				index.byByte[m.srcBytes[0]].push_back(&m);
 		}
-		if (!ok)
-			continue;
-		if (len > bestLen) {
-			bestLen = len;
-			best = &m;
+		else {
+			if (!m.srcW.empty())
+				index.byWChar[m.srcW[0]].push_back(&m);
 		}
 	}
-	return best;
+
+	// Longest pattern first, so the first successful match is the longest one -
+	// same "longest match wins" rule the previous linear scan implemented.
+	// stable_sort keeps ties in their original _map order, matching the old
+	// strict "len > bestLen" tie-breaking (first one encountered wins).
+	for (auto& kv : index.byByte) {
+		stable_sort(kv.second.begin(), kv.second.end(), [](const MappingEntry* a, const MappingEntry* b) {
+			return a->srcBytes.size() > b->srcBytes.size();
+		});
+	}
+	for (auto& kv : index.byWChar) {
+		stable_sort(kv.second.begin(), kv.second.end(), [](const MappingEntry* a, const MappingEntry* b) {
+			return a->srcW.size() > b->srcW.size();
+		});
+	}
+
+	return index;
 }
 
-const MappingEntry* Matcher::MatchWchars(const vector<MappingEntry>& _map, const wstring& _data, size_t _pos)
+const MappingEntry* Matcher::MatchBytes(const MatchIndex& _index, const vector<unsigned char>& _data, size_t _pos)
 {
-	const MappingEntry* best = nullptr;
-	size_t bestLen = 0;
+	auto it = _index.byByte.find(_data[_pos]);
+	if (it == _index.byByte.end())
+		return nullptr;
 
-	for (size_t i = 0; i < _map.size(); ++i) {
-		const MappingEntry& m = _map[i];
-		if (m.srcKind != TOKEN_KIND::WINDOWS_STRING)
+	for (const MappingEntry* m : it->second) {
+		size_t len = m->srcBytes.size();
+		if (_pos + len > _data.size())
 			continue;
-		size_t len = m.srcW.size();
-		if (len == 0 || _pos + len > _data.size())
-			continue;
+
 		bool ok = true;
 		for (size_t j = 0; j < len; ++j) {
-			if (_data[_pos + j] != m.srcW[j]) {
+			if (_data[_pos + j] != m->srcBytes[j]) {
 				ok = false;
 				break;
 			}
 		}
-		if (!ok)
-			continue;
-		if (len > bestLen) {
-			bestLen = len;
-			best = &m;
-		}
+		if (ok)
+			return m;
 	}
-	return best;
+	return nullptr;
+}
+
+const MappingEntry* Matcher::MatchWchars(const MatchIndex& _index, const wstring& _data, size_t _pos)
+{
+	auto it = _index.byWChar.find(_data[_pos]);
+	if (it == _index.byWChar.end())
+		return nullptr;
+
+	for (const MappingEntry* m : it->second) {
+		size_t len = m->srcW.size();
+		if (_pos + len > _data.size())
+			continue;
+
+		bool ok = true;
+		for (size_t j = 0; j < len; ++j) {
+			if (_data[_pos + j] != m->srcW[j]) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok)
+			return m;
+	}
+	return nullptr;
 }

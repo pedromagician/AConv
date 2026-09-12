@@ -8,10 +8,11 @@ void Converters::ConvertFromBytes(const vector<unsigned char>& _input, const vec
 	_outBytes.clear();
 	_outW.clear();
 
+	MatchIndex index = Matcher::BuildIndex(_map);
 	wchar_t buf[256];
 
 	for (size_t pos = 0; pos < _input.size();) {
-		const MappingEntry* m = Matcher::MatchBytes(_map, _input, pos);
+		const MappingEntry* m = Matcher::MatchBytes(index, _input, pos);
 		if (m) {
 			if (m->dstKind == TOKEN_KIND::BYTE_SEQUENCE) {
 				_outBytes.insert(_outBytes.end(), m->dstBytes.begin(), m->dstBytes.end());
@@ -51,10 +52,11 @@ void Converters::ConvertFromWchars(const wstring& _input, const vector<MappingEn
 	_outBytes.clear();
 	_outW.clear();
 
+	MatchIndex index = Matcher::BuildIndex(_map);
 	wchar_t buf[256];
 
 	for (size_t pos = 0; pos < _input.size();) {
-		const MappingEntry* m = Matcher::MatchWchars(_map, _input, pos);
+		const MappingEntry* m = Matcher::MatchWchars(index, _input, pos);
 		if (m) {
 			if (m->dstKind == TOKEN_KIND::BYTE_SEQUENCE) {
 				_outBytes.insert(_outBytes.end(), m->dstBytes.begin(), m->dstBytes.end());
