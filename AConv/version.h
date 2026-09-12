@@ -4,8 +4,8 @@
 #define STRINGIZE(s) STRINGIZE2(s)
 
 #define VERSION_MAJOR               2
-#define VERSION_MINOR               0
-#define VERSION_PATCH               3
+#define VERSION_MINOR               1
+#define VERSION_PATCH               0
 #define VERSION_REVISION            __BUILD_REVISION__
 
 #ifdef _WIN64
