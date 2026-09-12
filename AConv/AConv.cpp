@@ -73,7 +73,7 @@ int _tmain(int _argc, _TCHAR* _argv[])
 		L"Write the value of each byte from the input file to the output file in text form as a number in decimal notation.",
 		decdump);
 	cmd.AddBool({ L"hexdump", L"hd" },
-		L"Write the value of each byte from the input file to the output file in text form as a number in decimal notation.",
+		L"Write the value of each byte from the input file to the output file in text form as a number in hexadecimal notation.",
 		hexdump);
 	cmd.AddBool({ L"detect", L"d" },
 		L"Detect the encoding of the input file.",
