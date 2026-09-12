@@ -536,19 +536,14 @@ vector<unsigned char> File::ConvertToBytes(const wstring& _text, File::FILE_ENCO
 
 	case File::FILE_ENCODING::UTF16_LE_BOM:
 	case File::FILE_ENCODING::UTF16_LE_NOBOM: {
-		size_t currentSize = 0;
 		if (_encoding == File::FILE_ENCODING::UTF16_LE_BOM) {
-			currentSize = 2;
 			result.resize(2);
 			result[0] = 0xFF;
 			result[1] = 0xFE;
 		}
 
 		size_t byteCount = _text.length() * sizeof(wchar_t);
-		if (byteCount == 0) {
-			if (_encoding == File::FILE_ENCODING::UTF16_LE_BOM) { ; }
-			break;
-		}
+		if (byteCount == 0) break;
 
 		size_t offset = result.size();
 		result.resize(offset + byteCount);
@@ -560,9 +555,7 @@ vector<unsigned char> File::ConvertToBytes(const wstring& _text, File::FILE_ENCO
 
 	case File::FILE_ENCODING::UTF16_BE_BOM:
 	case File::FILE_ENCODING::UTF16_BE_NOBOM: {
-		size_t currentSize = 0;
 		if (_encoding == File::FILE_ENCODING::UTF16_BE_BOM) {
-			currentSize = 2;
 			result.resize(2);
 			result[0] = 0xFE;
 			result[1] = 0xFF;
