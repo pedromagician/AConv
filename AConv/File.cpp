@@ -253,6 +253,12 @@ File::FILE_ENCODING File::GetEncoding() const
 	return mEncoding;
 }
 
+// Detects the encoding of mData.
+// NOTE: In the absence of a BOM, detection beyond ASCII/UTF-8 falls back to
+// heuristics (see IsLikelyUtf16LeNoBom/IsLikelyUtf16BeNoBom below) and is not
+// guaranteed to be correct - it can misclassify small buffers or binary/non-text
+// data as UTF-16 or ANSI. Callers relying on the result for anything other
+// than best-effort text conversion should be aware of this limitation.
 void File::DetectEncoding()
 {
 	if (mData.size() < 2) {
@@ -341,6 +347,8 @@ bool File::IsValidUtf8NoBom() const
 
 // Heuristic check for UTF-16 Little Endian without BOM.
 // Assumes that if >90% of high-order bytes are null (0x00), it's likely LE Unicode.
+// LIMITATION: unreliable on small buffers and can misfire on binary/non-text data
+// that happens to contain many zero bytes at odd offsets.
 bool File::IsLikelyUtf16LeNoBom() const
 {
 	if (mData.size() < 4) return false;
@@ -355,6 +363,8 @@ bool File::IsLikelyUtf16LeNoBom() const
 
 // Heuristic check for UTF-16 Big Endian without BOM.
 // Assumes that if >90% of low-order bytes are null (0x00), it's likely BE Unicode.
+// LIMITATION: unreliable on small buffers and can misfire on binary/non-text data
+// that happens to contain many zero bytes at even offsets.
 bool File::IsLikelyUtf16BeNoBom() const
 {
 	if (mData.size() < 4) return false;

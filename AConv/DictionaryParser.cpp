@@ -392,7 +392,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 
 	File file;
 	if (!file.Open(_dictFile, _err)) {
-		wprintf(L"The file could not be loaded");
+		if (_err == File::ERRORS::Show) wprintf(L"The file could not be loaded\n");
 		return false;
 	}
 	wstring content = file.GetContentAsWString(File::CONVERT_END_OF_LINE::Convert);
