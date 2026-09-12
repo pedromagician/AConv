@@ -612,133 +612,38 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 void CreateDefaultKeyMapHelper(map<BYTE, wstring>& _km)
 {
 	_km.clear();
-	_km.insert(pair<BYTE, wstring>((BYTE)0, L"CTRL+, ♥"));
-	_km.insert(pair<BYTE, wstring>((BYTE)1, L"CTRL+a ├"));
-	_km.insert(pair<BYTE, wstring>((BYTE)2, L"CTRL+b │"));
-	_km.insert(pair<BYTE, wstring>((BYTE)3, L"CTRL+c ┘"));
-	_km.insert(pair<BYTE, wstring>((BYTE)4, L"CTRL+d ┤"));
-	_km.insert(pair<BYTE, wstring>((BYTE)5, L"CTRL+e ┐"));
-	_km.insert(pair<BYTE, wstring>((BYTE)6, L"CTRL+f ◄"));
-	_km.insert(pair<BYTE, wstring>((BYTE)7, L"CTRL+g ►"));
-	_km.insert(pair<BYTE, wstring>((BYTE)8, L"CTRL+h ▲"));
-	_km.insert(pair<BYTE, wstring>((BYTE)9, L"CTRL+i ░"));
-	_km.insert(pair<BYTE, wstring>((BYTE)10, L"CTRL+j ▼"));
-	_km.insert(pair<BYTE, wstring>((BYTE)11, L"CTRL+k ▒"));
-	_km.insert(pair<BYTE, wstring>((BYTE)12, L"CTRL+l ▓"));
-	_km.insert(pair<BYTE, wstring>((BYTE)13, L"CTRL+m ═"));
-	_km.insert(pair<BYTE, wstring>((BYTE)14, L"CTRL+n ▬"));
-	_km.insert(pair<BYTE, wstring>((BYTE)15, L"CTRL+o █"));
-	_km.insert(pair<BYTE, wstring>((BYTE)16, L"CTRL+p ☺"));
-	_km.insert(pair<BYTE, wstring>((BYTE)17, L"CTRL+q ┌"));
-	_km.insert(pair<BYTE, wstring>((BYTE)18, L"CTRL+r ─"));
-	_km.insert(pair<BYTE, wstring>((BYTE)19, L"CTRL+s ┼"));
-	_km.insert(pair<BYTE, wstring>((BYTE)20, L"CTRL+t •"));
-	_km.insert(pair<BYTE, wstring>((BYTE)21, L"CTRL+u ≈"));
-	_km.insert(pair<BYTE, wstring>((BYTE)22, L"CTRL+v ║"));
-	_km.insert(pair<BYTE, wstring>((BYTE)23, L"CTRL+w ┬"));
-	_km.insert(pair<BYTE, wstring>((BYTE)24, L"CTRL+x ┴"));
-	_km.insert(pair<BYTE, wstring>((BYTE)25, L"CTRL+y ▐"));
-	_km.insert(pair<BYTE, wstring>((BYTE)26, L"CTRL+z └"));
-	_km.insert(pair<BYTE, wstring>((BYTE)27, L"ESC ☼"));
-	_km.insert(pair<BYTE, wstring>((BYTE)28, L"up arrow"));
-	_km.insert(pair<BYTE, wstring>((BYTE)29, L"down arrow"));
-	_km.insert(pair<BYTE, wstring>((BYTE)30, L"left arrow"));
-	_km.insert(pair<BYTE, wstring>((BYTE)31, L"right arrow"));
-	_km.insert(pair<BYTE, wstring>((BYTE)32, L" "));
-	_km.insert(pair<BYTE, wstring>((BYTE)33, L"!"));
-	_km.insert(pair<BYTE, wstring>((BYTE)34, L"\""));
-	_km.insert(pair<BYTE, wstring>((BYTE)35, L"#"));
-	_km.insert(pair<BYTE, wstring>((BYTE)36, L"$"));
-	_km.insert(pair<BYTE, wstring>((BYTE)37, L"%"));
-	_km.insert(pair<BYTE, wstring>((BYTE)38, L"&"));
-	_km.insert(pair<BYTE, wstring>((BYTE)39, L"'"));
-	_km.insert(pair<BYTE, wstring>((BYTE)40, L"("));
-	_km.insert(pair<BYTE, wstring>((BYTE)41, L")"));
-	_km.insert(pair<BYTE, wstring>((BYTE)42, L"*"));
-	_km.insert(pair<BYTE, wstring>((BYTE)43, L"+"));
-	_km.insert(pair<BYTE, wstring>((BYTE)44, L","));
-	_km.insert(pair<BYTE, wstring>((BYTE)46, L"."));
-	_km.insert(pair<BYTE, wstring>((BYTE)47, L"/"));
-	_km.insert(pair<BYTE, wstring>((BYTE)48, L"0"));
-	_km.insert(pair<BYTE, wstring>((BYTE)49, L"1"));
-	_km.insert(pair<BYTE, wstring>((BYTE)50, L"2"));
-	_km.insert(pair<BYTE, wstring>((BYTE)51, L"3"));
-	_km.insert(pair<BYTE, wstring>((BYTE)52, L"4"));
-	_km.insert(pair<BYTE, wstring>((BYTE)53, L"5"));
-	_km.insert(pair<BYTE, wstring>((BYTE)54, L"6"));
-	_km.insert(pair<BYTE, wstring>((BYTE)55, L"7"));
-	_km.insert(pair<BYTE, wstring>((BYTE)56, L"8"));
-	_km.insert(pair<BYTE, wstring>((BYTE)57, L"9"));
-	_km.insert(pair<BYTE, wstring>((BYTE)58, L":"));
-	_km.insert(pair<BYTE, wstring>((BYTE)59, L";"));
-	_km.insert(pair<BYTE, wstring>((BYTE)60, L"<"));
-	_km.insert(pair<BYTE, wstring>((BYTE)61, L"="));
-	_km.insert(pair<BYTE, wstring>((BYTE)62, L">"));
-	_km.insert(pair<BYTE, wstring>((BYTE)63, L"?"));
-	_km.insert(pair<BYTE, wstring>((BYTE)64, L"@"));
-	_km.insert(pair<BYTE, wstring>((BYTE)65, L"A"));
-	_km.insert(pair<BYTE, wstring>((BYTE)66, L"B"));
-	_km.insert(pair<BYTE, wstring>((BYTE)67, L"C"));
-	_km.insert(pair<BYTE, wstring>((BYTE)68, L"D"));
-	_km.insert(pair<BYTE, wstring>((BYTE)69, L"E"));
-	_km.insert(pair<BYTE, wstring>((BYTE)70, L"F"));
-	_km.insert(pair<BYTE, wstring>((BYTE)71, L"G"));
-	_km.insert(pair<BYTE, wstring>((BYTE)72, L"H"));
-	_km.insert(pair<BYTE, wstring>((BYTE)73, L"I"));
-	_km.insert(pair<BYTE, wstring>((BYTE)74, L"J"));
-	_km.insert(pair<BYTE, wstring>((BYTE)75, L"K"));
-	_km.insert(pair<BYTE, wstring>((BYTE)76, L"L"));
-	_km.insert(pair<BYTE, wstring>((BYTE)77, L"M"));
-	_km.insert(pair<BYTE, wstring>((BYTE)78, L"N"));
-	_km.insert(pair<BYTE, wstring>((BYTE)79, L"O"));
-	_km.insert(pair<BYTE, wstring>((BYTE)80, L"P"));
-	_km.insert(pair<BYTE, wstring>((BYTE)81, L"Q"));
-	_km.insert(pair<BYTE, wstring>((BYTE)82, L"R"));
-	_km.insert(pair<BYTE, wstring>((BYTE)83, L"S"));
-	_km.insert(pair<BYTE, wstring>((BYTE)84, L"T"));
-	_km.insert(pair<BYTE, wstring>((BYTE)85, L"U"));
-	_km.insert(pair<BYTE, wstring>((BYTE)86, L"V"));
-	_km.insert(pair<BYTE, wstring>((BYTE)87, L"W"));
-	_km.insert(pair<BYTE, wstring>((BYTE)88, L"X"));
-	_km.insert(pair<BYTE, wstring>((BYTE)89, L"Y"));
-	_km.insert(pair<BYTE, wstring>((BYTE)90, L"Z"));
-	_km.insert(pair<BYTE, wstring>((BYTE)91, L"["));
-	_km.insert(pair<BYTE, wstring>((BYTE)92, L"\\"));
-	_km.insert(pair<BYTE, wstring>((BYTE)93, L"]"));
-	_km.insert(pair<BYTE, wstring>((BYTE)94, L"^"));
-	_km.insert(pair<BYTE, wstring>((BYTE)95, L"_"));
-	_km.insert(pair<BYTE, wstring>((BYTE)96, L"CTRL+. ♦"));
-	_km.insert(pair<BYTE, wstring>((BYTE)97, L"a"));
-	_km.insert(pair<BYTE, wstring>((BYTE)98, L"b"));
-	_km.insert(pair<BYTE, wstring>((BYTE)99, L"c"));
-	_km.insert(pair<BYTE, wstring>((BYTE)100, L"d"));
-	_km.insert(pair<BYTE, wstring>((BYTE)101, L"e"));
-	_km.insert(pair<BYTE, wstring>((BYTE)102, L"f"));
-	_km.insert(pair<BYTE, wstring>((BYTE)103, L"g"));
-	_km.insert(pair<BYTE, wstring>((BYTE)104, L"h"));
-	_km.insert(pair<BYTE, wstring>((BYTE)105, L"i"));
-	_km.insert(pair<BYTE, wstring>((BYTE)106, L"j"));
-	_km.insert(pair<BYTE, wstring>((BYTE)107, L"k"));
-	_km.insert(pair<BYTE, wstring>((BYTE)108, L"l"));
-	_km.insert(pair<BYTE, wstring>((BYTE)109, L"m"));
-	_km.insert(pair<BYTE, wstring>((BYTE)110, L"n"));
-	_km.insert(pair<BYTE, wstring>((BYTE)111, L"o"));
-	_km.insert(pair<BYTE, wstring>((BYTE)112, L"p"));
-	_km.insert(pair<BYTE, wstring>((BYTE)113, L"q"));
-	_km.insert(pair<BYTE, wstring>((BYTE)114, L"r"));
-	_km.insert(pair<BYTE, wstring>((BYTE)115, L"s"));
-	_km.insert(pair<BYTE, wstring>((BYTE)116, L"t"));
-	_km.insert(pair<BYTE, wstring>((BYTE)117, L"u"));
-	_km.insert(pair<BYTE, wstring>((BYTE)118, L"v"));
-	_km.insert(pair<BYTE, wstring>((BYTE)119, L"w"));
-	_km.insert(pair<BYTE, wstring>((BYTE)120, L"x"));
-	_km.insert(pair<BYTE, wstring>((BYTE)121, L"y"));
-	_km.insert(pair<BYTE, wstring>((BYTE)122, L"z"));
-	_km.insert(pair<BYTE, wstring>((BYTE)123, L"CTRL+; ♣"));
-	_km.insert(pair<BYTE, wstring>((BYTE)124, L"|"));
-	_km.insert(pair<BYTE, wstring>((BYTE)125, L"CLEAR"));
-	_km.insert(pair<BYTE, wstring>((BYTE)126, L"DELETE"));
-	_km.insert(pair<BYTE, wstring>((BYTE)127, L"TAB 	"));
+
+	// Control range (0-31): CTRL key combinations mapped to Atari-style symbols.
+	static const pair<BYTE, wstring> controlChars[] = {
+		{0,  L"CTRL+, ♥"}, {1,  L"CTRL+a ├"}, {2,  L"CTRL+b │"}, {3,  L"CTRL+c ┘"},
+		{4,  L"CTRL+d ┤"}, {5,  L"CTRL+e ┐"}, {6,  L"CTRL+f ◄"}, {7,  L"CTRL+g ►"},
+		{8,  L"CTRL+h ▲"}, {9,  L"CTRL+i ░"}, {10, L"CTRL+j ▼"}, {11, L"CTRL+k ▒"},
+		{12, L"CTRL+l ▓"}, {13, L"CTRL+m ═"}, {14, L"CTRL+n ▬"}, {15, L"CTRL+o █"},
+		{16, L"CTRL+p ☺"}, {17, L"CTRL+q ┌"}, {18, L"CTRL+r ─"}, {19, L"CTRL+s ┼"},
+		{20, L"CTRL+t •"}, {21, L"CTRL+u ≈"}, {22, L"CTRL+v ║"}, {23, L"CTRL+w ┬"},
+		{24, L"CTRL+x ┴"}, {25, L"CTRL+y ▐"}, {26, L"CTRL+z └"}, {27, L"ESC ☼"},
+		{28, L"up arrow"}, {29, L"down arrow"}, {30, L"left arrow"}, {31, L"right arrow"},
+	};
+	for (const auto& kv : controlChars)
+		_km.insert(kv);
+
+	// Printable range (32-127) is identical to plain ASCII, with a few
+	// Atari-specific overrides. Byte 45 ('-') is intentionally left out,
+	// because '-' is used as the dictionary separator elsewhere.
+	static const map<BYTE, wstring> printableOverrides = {
+		{96,  L"CTRL+. ♦"},
+		{123, L"CTRL+; ♣"},
+		{125, L"CLEAR"},
+		{126, L"DELETE"},
+		{127, L"TAB \t"},
+	};
+	for (BYTE b = 32; b < 128; ++b) {
+		if (b == 45) continue;
+
+		auto it = printableOverrides.find(b);
+		wstring value = (it != printableOverrides.end()) ? it->second : wstring(1, (wchar_t)b);
+		_km.insert(pair<BYTE, wstring>(b, value));
+	}
 }
 
 bool DictionaryParser::CreateDefaultKeyMap()
