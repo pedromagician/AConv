@@ -68,6 +68,7 @@ private:
 	bool mHelp;
 
 	void AddParamBase(ParamDef& _p);
+	ParamDef MakeParamDef(const vector<wstring>& _names, const wstring& _desc, ParamType _type, RequiredParam _required) const;
 
 public:
 	CommandLine();

@@ -20,6 +20,17 @@ CommandLine::ParamDef::ParamDef()
 	seen(false)
 {}
 
+CommandLine::ParamDef CommandLine::MakeParamDef(const vector<wstring>& _names, const wstring& _desc, ParamType _type, RequiredParam _required) const
+{
+	ParamDef p;
+	p.names = _names;
+	p.description = _desc;
+	p.type = _type;
+	p.required = _required;
+	p.hasDefault = (_required == RequiredParam::Optional);
+	return p;
+}
+
 void CommandLine::AddParamBase(ParamDef& _p)
 {
 	// check duplicates inside this parameter
@@ -60,13 +71,8 @@ void CommandLine::AddBool(const vector<wstring>& _names, const wstring& _desc, b
 
 void CommandLine::AddBool(const vector<wstring>& _names, const wstring& _desc, bool& _outVar, RequiredParam _required, bool _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::BOOL;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::BOOL, _required);
 	p.outBool = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultBool = _defaultValue;
 
 	AddParamBase(p);
@@ -79,13 +85,8 @@ void CommandLine::AddInt(const vector<wstring>& _names, const wstring& _desc, in
 
 void CommandLine::AddInt(const vector<wstring>& _names, const wstring& _desc, int& _outVar, RequiredParam _required, int _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::INT;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::INT, _required);
 	p.outInt = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultInt = _defaultValue;
 
 	AddParamBase(p);
@@ -98,13 +99,8 @@ void CommandLine::AddString(const vector<wstring>& _names, const wstring& _desc,
 
 void CommandLine::AddString(const vector<wstring>& _names, const wstring& _desc, wstring& _outVar, RequiredParam _required, const wstring& _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::STRING;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::STRING, _required);
 	p.outString = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultString = _defaultValue;
 
 	AddParamBase(p);
@@ -117,14 +113,9 @@ void CommandLine::AddEnum(const vector<wstring>& _names, const wstring& _desc, c
 
 void CommandLine::AddEnum(const vector<wstring>& _names, const wstring& _desc, const map<wstring, int>& _enumMap, int& _outVar, RequiredParam _required, int _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::ENUM;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::ENUM, _required);
 	p.enumMap = _enumMap;
 	p.outEnum = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultEnum = _defaultValue;
 
 	AddParamBase(p);
@@ -137,13 +128,8 @@ void CommandLine::AddChar(const vector<wstring>& _names, const wstring& _desc, w
 
 void CommandLine::AddChar(const vector<wstring>& _names, const wstring& _desc, wchar_t& _outVar, RequiredParam _required, wchar_t _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::CHAR;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::CHAR, _required);
 	p.outChar = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultChar = _defaultValue;
 
 	AddParamBase(p);
@@ -156,13 +142,8 @@ void CommandLine::AddColor(const vector<wstring>& _names, const wstring& _desc, 
 
 void CommandLine::AddColor(const vector<wstring>& _names, const wstring& _desc, ColorRGB& _outVar, RequiredParam _required, const ColorRGB& _defaultValue)
 {
-	ParamDef p;
-	p.names = _names;
-	p.description = _desc;
-	p.type = ParamType::COLOR;
+	ParamDef p = MakeParamDef(_names, _desc, ParamType::COLOR, _required);
 	p.outColor = &_outVar;
-	p.required = _required;
-	p.hasDefault = (_required == RequiredParam::Optional);
 	p.defaultColor = _defaultValue;
 
 	AddParamBase(p);
