@@ -195,7 +195,10 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 		mData.resize(fileSize);
 	}
 	catch (...) {
+		CloseHandle(hFile);
+		mFileOpened = false;
 		if (mErrors == ERRORS::Show) wprintf(L"Error - Unknown memory exception during resize()\n");
+		return false;
 	}
 
 	DWORD bytesRead = 0;
