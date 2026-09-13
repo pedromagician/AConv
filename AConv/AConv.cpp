@@ -105,7 +105,11 @@ int _tmain(int _argc, _TCHAR* _argv[])
 		L"Specifies the replacement character used for unknown characters. The default replacement character is '?'",
 		errorCharacter);
 
-	if (!cmd.ParseCommandLine(_argc, _argv, correctParameters) || correctParameters == 0 || help) {
+	if (!cmd.ParseCommandLine(_argc, _argv, correctParameters)) {
+		wprintf(L"Run with -help for usage information.\n");
+		return 0;
+	}
+	if (correctParameters == 0 || help) {
 		cmd.Help();
 		return 0;
 	}

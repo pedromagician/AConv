@@ -104,7 +104,7 @@ AConv.exe -i input.txt -o output.txt -k amiga.dict -t b2w -ansi
 | `-inputClipboard`, `-ic` | Specifies that the input data should be read from the system clipboard instead of a file. |
 | `-outputClipboard`, `-oc` | Specifies that the converted output should be written to the system clipboard instead of a file. |
 | `-decdump`, `-dd` | Write the value of each byte from the input file to the output file in text form as a number in decimal notation. |
-| `-hexdump`, `-hd` | Write the value of each byte from the input file to the output file in text form as a number in decimal notation. |
+| `-hexdump`, `-hd` | Write the value of each byte from the input file to the output file in text form as a number in hexadecimal notation. |
 | `-detect`, `-d` | Detect the encoding of the input file. |
 | `-generatekeymap`, `-g` | Generates a default character map and saves it to 'keyMap.dict'. |
 | `-keymap`, `-k` | Specifies a single character map file used for conversion. This option applies only when converting. Default: 'keyMap.dict'. |

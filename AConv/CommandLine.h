@@ -42,6 +42,7 @@ public:
 
 		RequiredParam required;
 		bool hasDefault;
+		bool parseEscapes;
 
 		bool* outBool;
 		int* outInt;
@@ -68,7 +69,7 @@ private:
 	bool mHelp;
 
 	void AddParamBase(ParamDef& _p);
-	ParamDef MakeParamDef(const vector<wstring>& _names, const wstring& _desc, ParamType _type, RequiredParam _required) const;
+	bool LooksLikeKnownFlag(const wstring& _token) const;
 
 public:
 	CommandLine();
@@ -78,8 +79,8 @@ public:
 	void AddBool(const vector<wstring>& _names, const wstring& _desc, bool& _outVar, RequiredParam _required, bool _defaultValue);
 	void AddInt(const vector<wstring>& _names, const wstring& _desc, int& _outVar);
 	void AddInt(const vector<wstring>& _names, const wstring& _desc, int& _outVar, RequiredParam _required, int _defaultValue);
-	void AddString(const vector<wstring>& _names, const wstring& _desc, wstring& _outVar);
-	void AddString(const vector<wstring>& _names, const wstring& _desc, wstring& _outVar, RequiredParam _required, const wstring& _defaultValue);
+	void AddString(const vector<wstring>& _names, const wstring& _desc, wstring& _outVar, bool _parseEscapes = false);
+	void AddString(const vector<wstring>& _names, const wstring& _desc, wstring& _outVar, RequiredParam _required, const wstring& _defaultValue, bool _parseEscapes = false);
 	void AddEnum(const vector<wstring>& _names, const wstring& _desc, const map<wstring, int>& _enumMap, int& _outVar);
 	void AddEnum(const vector<wstring>& _names, const wstring& _desc, const map<wstring, int>& _enumMap, int& _outVar, RequiredParam _required, int _defaultValue);
 	void AddChar(const vector<wstring>& _names, const wstring& _desc, wchar_t& _outVar);
