@@ -26,6 +26,7 @@ AConv also includes a powerful encoding detection engine based on dictionary mat
 - Raw byte dump mode (-decdump, -hexdump)
 - Default keymap generator (-generatekeymap)
 - Configurable error handling for unknown characters
+- Configurable console logging (-log): all, important, errors, silent
 - Clipboard input and output support
 - Output formats:
   - ANSI
@@ -114,6 +115,7 @@ AConv.exe -i input.txt -o output.txt -k amiga.dict -t b2w -ansi
 | `-format`, `-f` | Sets the output file format (Windows mode) to:<br><br>Values:<br>- ansi<br>- utf8 (utf8nobom)<br>- bom (utf8+bom, utf8bom, utf8withbom) |
 | `-errorlevel`, `-e` | Controls how unknown characters are handled :<br><br>2(default) – Replace unknown characters with the 'error character' and display a warning<br>1 – Do not replace, display a warning only<br>0 – Do not replace and do not display warnings |
 | `-errorcharacter`, `-c` | Specifies the replacement character used for unknown characters. The default replacement character is '?'. |
+| `-log`, `-l` | Controls console logging:<br><br>Values:<br>- all (default) – Print everything<br>- important – Print only important messages (errors, warnings, results)<br>- errors – Print only errors<br>- silent – Print nothing |
 
 
 ## 📦 Examples
@@ -140,6 +142,12 @@ AConv.exe -i file.bin -o dump.txt -decdump
 
 ```CMD
 AConv.exe -g
+```
+
+5. Silent conversion (no console output)
+
+```CMD
+AConv.exe -i story.txt -o story.ami -k amiga.dict -t w2b -log silent
 ```
 
 ## 📝 Notes
