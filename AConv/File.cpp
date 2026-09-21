@@ -171,12 +171,12 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 {
 	mErrors = _err;
 
-	if (mErrors == ERRORS::Show) wprintf(L"Opening file: '%s'\n", _filename.c_str());
+	if (mErrors == ERRORS::Show) Log::Info(L"Opening file: '%s'\n", _filename.c_str());
 
 	HANDLE hFile = CreateFileW(_filename.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile == INVALID_HANDLE_VALUE) {
 		mFileOpened = false;
-		if (mErrors == ERRORS::Show) wprintf(L"Error - The file '%s' cannot be opened\n", _filename.c_str());
+		if (mErrors == ERRORS::Show) Log::Error(L"Error - The file '%s' cannot be opened\n", _filename.c_str());
 		return false;
 	}
 
@@ -186,7 +186,7 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 		if (err != NO_ERROR) {
 			CloseHandle(hFile);
 			mFileOpened = false;
-			if (mErrors == ERRORS::Show) wprintf(L"Error - GetFileSize failed (INVALID_FILE_SIZE), WinAPI error #%u\n", err);
+			if (mErrors == ERRORS::Show) Log::Error(L"Error - GetFileSize failed (INVALID_FILE_SIZE), WinAPI error #%u\n", err);
 			return false;
 		}
 	}
@@ -197,7 +197,7 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 	catch (...) {
 		CloseHandle(hFile);
 		mFileOpened = false;
-		if (mErrors == ERRORS::Show) wprintf(L"Error - Unknown memory exception during resize()\n");
+		if (mErrors == ERRORS::Show) Log::Error(L"Error - Unknown memory exception during resize()\n");
 		return false;
 	}
 
@@ -206,7 +206,7 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 		CloseHandle(hFile);
 		mData.clear();
 		mFileOpened = false;
-		if (mErrors == ERRORS::Show) wprintf(L"Error - ReadFile failed. File='%s' [bytesRead=%u]\n", _filename.c_str(), bytesRead);
+		if (mErrors == ERRORS::Show) Log::Error(L"Error - ReadFile failed. File='%s' [bytesRead=%u]\n", _filename.c_str(), bytesRead);
 		return false;
 	}
 
@@ -217,7 +217,7 @@ bool File::Open(const wstring& _filename, ERRORS _err)
 	}
 
 	mFileOpened = true;
-	if (mErrors == ERRORS::Show) wprintf(L"File has been loaded\n");
+	if (mErrors == ERRORS::Show) Log::Info(L"File has been loaded\n");
 
 	DetectEncoding();
 
@@ -400,7 +400,7 @@ wstring File::GetContentAsWString(CONVERT_END_OF_LINE _eol) const
 			int res = MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(src + offset), static_cast<int>(srcLen - offset), &result[0], len);
 			if (len != res) {
 				DWORD err = GetLastError();
-				wprintf(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
+				Log::Error(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
 					len, res, err);
 			}
 		}
@@ -445,7 +445,7 @@ wstring File::GetContentAsWString(CONVERT_END_OF_LINE _eol) const
 			int res = MultiByteToWideChar(cp, 0, reinterpret_cast<const char*>(src + offset), static_cast<int>(srcLen - offset), &result[0], len);
 			if (len != res) {
 				DWORD err = GetLastError();
-				wprintf(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
+				Log::Error(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
 					len, res, err);
 			}
 		}
@@ -674,7 +674,7 @@ bool File::ReadFile(const wstring& _filename, unique_ptr<BYTE[]>& _buffer, unsig
 bool File::WriteFile(const wstring& _filename, const wstring& _buffer, const File::FILE_ENCODING& _type, CONVERT_END_OF_LINE _eol, ERRORS _err)
 {
 	if (_filename.empty()) {
-		if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: filename is empty\n");
+		if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: filename is empty\n");
 		return false;
 	}
 
@@ -697,13 +697,13 @@ bool File::WriteFile(const wstring& _filename, const wstring& _buffer, const Fil
 
 	vector<unsigned char> bytes = ConvertToBytes(normalizedBuffer, _type);
 	if (bytes.empty() && normalizedBuffer.empty() == false) {
-		if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: byte conversion returned empty buffer\n");
+		if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: byte conversion returned empty buffer\n");
 		return false;
 	}
 
 	HANDLE hFile = CreateFileW(_filename.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: cannot create file '%s' (WinAPI error #%u)\n", _filename.c_str(), GetLastError());
+		if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: cannot create file '%s' (WinAPI error #%u)\n", _filename.c_str(), GetLastError());
 		return false;
 	}
 
@@ -712,7 +712,7 @@ bool File::WriteFile(const wstring& _filename, const wstring& _buffer, const Fil
 	if (!bytes.empty()) {
 		success = ::WriteFile(hFile, bytes.data(), (DWORD)bytes.size(), &bytesWritten, nullptr);
 		if (!success) {
-			if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed while writing to '%s' [bytesWritten=%u] WinAPI error #%u\n", _filename.c_str(), bytesWritten, GetLastError());
+			if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed while writing to '%s' [bytesWritten=%u] WinAPI error #%u\n", _filename.c_str(), bytesWritten, GetLastError());
 		}
 	}
 	else {
@@ -736,7 +736,7 @@ bool File::WriteANSIFile(const wstring& _filename, const wstring& _buffer, CONVE
 bool File::WriteFile(const wstring& _filename, const BYTE* _buffer, unsigned int _length, ERRORS _err)
 {
 	if (_filename.empty()) {
-		if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: filename is empty\n");
+		if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: filename is empty\n");
 		return false;
 	}
 
@@ -746,7 +746,7 @@ bool File::WriteFile(const wstring& _filename, const BYTE* _buffer, unsigned int
 		wstring folder = wstring(drive) + wstring(dir);
 		if (!folder.empty() && folder != L"\\" && folder != L"/") {
 			if (!CreateDirectoryRecursively(folder)) {
-				if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: unable to create directory '%s'\n", folder.c_str());
+				if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: unable to create directory '%s'\n", folder.c_str());
 				return false;
 			}
 		}
@@ -754,7 +754,7 @@ bool File::WriteFile(const wstring& _filename, const BYTE* _buffer, unsigned int
 
 	HANDLE hFile = CreateFileW(_filename.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: cannot create file '%s' (WinAPI error #%u)\n", _filename.c_str(), GetLastError());
+		if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: cannot create file '%s' (WinAPI error #%u)\n", _filename.c_str(), GetLastError());
 		return false;
 	}
 
@@ -762,11 +762,11 @@ bool File::WriteFile(const wstring& _filename, const BYTE* _buffer, unsigned int
 	if (_length > 0 && _buffer != nullptr) {
 		DWORD bytesWritten = 0;
 		if (!::WriteFile(hFile, _buffer, _length, &bytesWritten, nullptr)) {
-			if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed while writing to '%s' [bytesWritten=%u] WinAPI error #%u\n", _filename.c_str(), bytesWritten, GetLastError());
+			if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed while writing to '%s' [bytesWritten=%u] WinAPI error #%u\n", _filename.c_str(), bytesWritten, GetLastError());
 			success = false;
 		}
 		else if (bytesWritten != _length) {
-			if (_err == ERRORS::Show) wprintf(L"Error - WriteFile failed: incomplete write to '%s' [written=%u expected=%u]\n", _filename.c_str(), bytesWritten, _length);
+			if (_err == ERRORS::Show) Log::Error(L"Error - WriteFile failed: incomplete write to '%s' [written=%u expected=%u]\n", _filename.c_str(), bytesWritten, _length);
 			success = false;
 		}
 	}

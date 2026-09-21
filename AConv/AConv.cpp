@@ -13,7 +13,7 @@ Debug theDebug;
 int _tmain(int _argc, _TCHAR* _argv[])
 {
 	if (Locale::EnableLocale() == false)
-		wprintf(L"Error - Locale initialization failed\n");
+		Log::Error(L"Error - Locale initialization failed\n");
 
 	int correctParameters = 0;
 	bool help = false;
@@ -29,6 +29,14 @@ int _tmain(int _argc, _TCHAR* _argv[])
 	bool invertCodeMap = false;
 	int errorReportingLevel = -1;
 	wchar_t errorCharacter = '\0';
+
+	map<wstring, int> listOfLogLevels {
+		{L"all",		(int)Log::Level::All},
+		{L"important",	(int)Log::Level::Important},
+		{L"errors",		(int)Log::Level::Errors},
+		{L"silent",		(int)Log::Level::Silent},
+	};
+	int logLevel = (int)Log::Level::All;
 
 	map<wstring, int> listOfConversionTypes {
 		{L"byte2byte",			(int)ConvType::BYTE_TO_BYTE},
@@ -104,11 +112,20 @@ int _tmain(int _argc, _TCHAR* _argv[])
 	cmd.AddChar({ L"errorcharacter", L"c" },
 		L"Specifies the replacement character used for unknown characters. The default replacement character is '?'",
 		errorCharacter);
+	cmd.AddEnum({ L"log", L"l" },
+		L"Controls console logging:\
+		\n\t    all (default) – Print everything\
+		\n\t    important – Print only important messages (errors, warnings, results)\
+		\n\t    errors – Print only errors\
+		\n\t    silent – Print nothing",
+		listOfLogLevels, logLevel);
 
 	if (!cmd.ParseCommandLine(_argc, _argv, correctParameters)) {
-		wprintf(L"Run with -help for usage information.\n");
+		Log::Error(L"Run with -help for usage information.\n");
 		return 0;
 	}
+	Log::SetLevel((Log::Level)logLevel);
+
 	if (correctParameters == 0 || help) {
 		cmd.Help();
 		return 0;
@@ -119,17 +136,17 @@ int _tmain(int _argc, _TCHAR* _argv[])
 	}
 
 	if (inputFileName.empty() && inputClipboard == false) {
-		wprintf(L"Error - unknown input file\n");
+		Log::Error(L"Error - unknown input file\n");
 		return 1;
 	}
 
 	if (inputFileName.empty() == false && inputClipboard == true) {
-		wprintf(L"Error - input from file or clipboard?\n");
+		Log::Error(L"Error - input from file or clipboard?\n");
 		return 1;
 	}
 
 	if (outputFileName.empty() == false && outputClipboard == true) {
-		wprintf(L"Error - save to file or clipboard?\n");
+		Log::Error(L"Error - save to file or clipboard?\n");
 		return 1;
 	}
 
@@ -153,7 +170,7 @@ int _tmain(int _argc, _TCHAR* _argv[])
 		File::SplitMask(dictMask, folder, extensionNoDot, L"dict", L"dict");
 		vector<wstring> dicts = File::LoadFileNames(folder, extensionNoDot);
 		if (dicts.empty()) {
-			wprintf(L"No keymap/dictionary files found\n  Folder: '%s'\n  Extension: '%s'\n  Mask example: %s\\*.%s\n", folder.c_str(), extensionNoDot.c_str(), folder.c_str(), extensionNoDot.c_str());
+			Log::Error(L"No keymap/dictionary files found\n  Folder: '%s'\n  Extension: '%s'\n  Mask example: %s\\*.%s\n", folder.c_str(), extensionNoDot.c_str(), folder.c_str(), extensionNoDot.c_str());
 			return 1;
 		}
 
@@ -166,7 +183,7 @@ int _tmain(int _argc, _TCHAR* _argv[])
 	}
 
 	if (ConvType(conversionType) == ConvType::UNKNOWN) {
-		wprintf(L"Unknown conversion mode\n");
+		Log::Error(L"Unknown conversion mode\n");
 		return 1;
 	}
 

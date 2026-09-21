@@ -152,7 +152,7 @@ wstring Conversion::ConvertString2WString(const string& _inputString, UINT _code
 	int res = MultiByteToWideChar(_codePage, 0, _inputString.c_str(), (int)_inputString.length(), &wstrTo[0], len);
 	if (len != res) {
 		DWORD err = GetLastError();
-		wprintf(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
+		Log::Error(L"MultiByteToWideChar conversion error: expected %d chars, got %d (error %lu)\n",
 			len, res, err);
 	}
 	return wstrTo;
@@ -166,7 +166,7 @@ string Conversion::ConvertWString2String(const wstring& _inputWString, UINT _cod
 	int res = WideCharToMultiByte(_codePage, 0, _inputWString.c_str(), (int)_inputWString.length(), &strTo[0], len, 0, 0);
 	if (len != res) {
 		DWORD err = GetLastError();
-		wprintf(L"WideCharToMultiByte conversion error: expected %d chars, got %d (error %lu)\n",
+		Log::Error(L"WideCharToMultiByte conversion error: expected %d chars, got %d (error %lu)\n",
 			len, res, err);
 	}
 	return strTo;

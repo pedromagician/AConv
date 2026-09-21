@@ -278,7 +278,7 @@ vector<DictScore> DictionaryParser::DetectEncoding(const wstring& _inputFile, co
 		if (!file.Open(_inputFile, File::ERRORS::Show))
 			return {};
 
-		wprintf(L"Encoding: %s\n", File::String(file.GetEncoding()).c_str());
+		Log::Info(L"Encoding: %s\n", File::String(file.GetEncoding()).c_str());
 
 		input = file.GetDataVector();
 		inputText = file.GetContentAsWString(File::CONVERT_END_OF_LINE::Convert);
@@ -296,7 +296,7 @@ vector<DictScore> DictionaryParser::DetectEncoding(const wstring& _inputFile, co
 		wstring encoding;
 
 		if (!DictionaryParser::Parse(dictFile, pairs, cp, toLower, toUpper, errLevel, errChar, encoding, File::ERRORS::Hide)) {
-			wprintf(L"Skipping dictionary %s (parse error)\n", dictFile.c_str());
+			Log::Warn(L"Skipping dictionary %s (parse error)\n", dictFile.c_str());
 			continue;
 		}
 
@@ -388,16 +388,16 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 
 	DictSection section = DictSection::NONE;
 
-	if (_err == File::ERRORS::Show) wprintf(L"Opening dictionary: %s", _dictFile.c_str());
+	if (_err == File::ERRORS::Show) Log::Info(L"Opening dictionary: %s", _dictFile.c_str());
 
 	File file;
 	if (!file.Open(_dictFile, _err)) {
-		if (_err == File::ERRORS::Show) wprintf(L"The file could not be loaded\n");
+		if (_err == File::ERRORS::Show) Log::Error(L"The file could not be loaded\n");
 		return false;
 	}
 	wstring content = file.GetContentAsWString(File::CONVERT_END_OF_LINE::Convert);
 
-	if (_err == File::ERRORS::Show) wprintf(L"Encoding: %s\n", File::String(file.GetEncoding()).c_str());
+	if (_err == File::ERRORS::Show) Log::Info(L"Encoding: %s\n", File::String(file.GetEncoding()).c_str());
 
 	bool hexMode = false;// dec/hex
 	wchar_t separator = L'-';
@@ -447,17 +447,17 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 					strSeparator = Conversion::TrimWhiteChar(strSeparator);
 					if (strSeparator.size() < 1) continue;
 					separator = strSeparator[0];
-					if (_err == File::ERRORS::Show) wprintf(L"Dictionary separator: %c\n", separator);
+					if (_err == File::ERRORS::Show) Log::Info(L"Dictionary separator: %c\n", separator);
 					continue;
 				}
 				if (lower == L"dec") {
 					hexMode = false;
-					if (_err == File::ERRORS::Show) wprintf(L"Dictionary number base: DEC\n");
+					if (_err == File::ERRORS::Show) Log::Info(L"Dictionary number base: DEC\n");
 					continue;
 				}
 				if (lower == L"hex") {
 					hexMode = true;
-					if (_err == File::ERRORS::Show) wprintf(L"Dictionary number base: HEX\n");
+					if (_err == File::ERRORS::Show) Log::Info(L"Dictionary number base: HEX\n");
 					continue;
 				}
 
@@ -465,7 +465,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 				if (dash != wstring::npos) {
 					currentLeftType = Conversion::TrimWhiteChar(lower.substr(0, dash));
 					currentRightType = Conversion::TrimWhiteChar(lower.substr(dash + 1));
-					if (_err == File::ERRORS::Show) wprintf(L"Dictionary pair type: [%s - %s]\n", currentLeftType.c_str(), currentRightType.c_str());
+					if (_err == File::ERRORS::Show) Log::Info(L"Dictionary pair type: [%s - %s]\n", currentLeftType.c_str(), currentRightType.c_str());
 					continue;
 				}
 			}
@@ -487,7 +487,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 				}
 
 				if (Conversion::StartsWith(lower, L"name:") || Conversion::StartsWith(lower, L"author:") || Conversion::StartsWith(lower, L"version:")) {
-					if (_err == File::ERRORS::Show) wprintf(L"%s\n", meta.c_str());
+					if (_err == File::ERRORS::Show) Log::Info(L"%s\n", meta.c_str());
 				}
 			}
 			continue;
@@ -509,25 +509,25 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 
 			if (lowerKey == L"number-base") {
 				hexMode = (lowerVal == L"hex");
-				if (_err == File::ERRORS::Show) wprintf(L"Dictionary number base: %s\n", hexMode ? L"HEX" : L"DEC");
+				if (_err == File::ERRORS::Show) Log::Info(L"Dictionary number base: %s\n", hexMode ? L"HEX" : L"DEC");
 			}
 			else if (lowerKey == L"code-page") {
-				if (_err == File::ERRORS::Show) wprintf(L"Code Page: %s\n", val.c_str());
+				if (_err == File::ERRORS::Show) Log::Info(L"Code Page: %s\n", val.c_str());
 				_codePage = (unsigned int)Conversion::ToInt(val);
 			}
 			else if (lowerKey == L"tolower") {
 				_toLower = (lowerVal == L"true" || lowerVal == L"on" || lowerVal == L"1");
-				if (_err == File::ERRORS::Show) wprintf(L"ToLower: %s\n", _toLower ? L"true" : L"false");
+				if (_err == File::ERRORS::Show) Log::Info(L"ToLower: %s\n", _toLower ? L"true" : L"false");
 			}
 			else if (lowerKey == L"toupper") {
 				_toUpper = (lowerVal == L"true" || lowerVal == L"on" || lowerVal == L"1");
-				if (_err == File::ERRORS::Show) wprintf(L"ToUpper: %s\n", _toUpper ? L"true" : L"false");
+				if (_err == File::ERRORS::Show) Log::Info(L"ToUpper: %s\n", _toUpper ? L"true" : L"false");
 			}
 			else if (lowerKey == L"errorlevel") {
 				if (_errorReportingLevel < 0) _errorReportingLevel = Conversion::ToInt(val);
 				if (_errorReportingLevel < 0 || _errorReportingLevel > 2) _errorReportingLevel = 2;
 
-				if (_err == File::ERRORS::Show) wprintf(L"Error level: %u\n", _errorReportingLevel);
+				if (_err == File::ERRORS::Show) Log::Info(L"Error level: %u\n", _errorReportingLevel);
 			}
 			else if (lowerKey == L"errorcharacter") {
 				if (_errorCharacter == '\0') {
@@ -538,7 +538,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 					else _errorCharacter = '?';
 				}
 
-				if (_err == File::ERRORS::Show) wprintf(L"Error character: %lc\n", _errorCharacter);
+				if (_err == File::ERRORS::Show) Log::Info(L"Error character: %lc\n", _errorCharacter);
 			}
 			continue;
 		}
@@ -550,7 +550,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 		// data row: left-right
 		size_t dash = line.find_first_of(separator);
 		if (dash == 0 || dash == wstring::npos) {
-			if (_err == File::ERRORS::Show) wprintf(L"Ignoring invalid dictionary line %zu: %s\n", lineNo, line.c_str());
+			if (_err == File::ERRORS::Show) Log::Warn(L"Ignoring invalid dictionary line %zu: %s\n", lineNo, line.c_str());
 			continue;
 		}
 
@@ -564,7 +564,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 		if (leftTypeLower == L"byte") {
 			pair.left.kind = TOKEN_KIND::BYTE_SEQUENCE;
 			if (!ParseByteList(leftPart, hexMode, pair.left.bytes)) {
-				if (_err == File::ERRORS::Show) wprintf(L"Ignoring invalid byte list at line %zu (left)\n", lineNo);
+				if (_err == File::ERRORS::Show) Log::Warn(L"Ignoring invalid byte list at line %zu (left)\n", lineNo);
 				continue;
 			}
 		}
@@ -577,7 +577,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 			pair.left.wstr = Conversion::ParseEscapeString(leftPart);
 		}
 		else {
-			if (_err == File::ERRORS::Show) wprintf(L"Ignoring dictionary line %zu: unknown left type '%s'\n", lineNo, currentLeftType.c_str());
+			if (_err == File::ERRORS::Show) Log::Warn(L"Ignoring dictionary line %zu: unknown left type '%s'\n", lineNo, currentLeftType.c_str());
 			continue;
 		}
 
@@ -586,7 +586,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 		if (rightTypeLower == L"byte") {
 			pair.right.kind = TOKEN_KIND::BYTE_SEQUENCE;
 			if (!ParseByteList(rightPart, hexMode, pair.right.bytes)) {
-				if (_err == File::ERRORS::Show) wprintf(L"Ignoring invalid byte list at line %zu (right)\n", lineNo);
+				if (_err == File::ERRORS::Show) Log::Warn(L"Ignoring invalid byte list at line %zu (right)\n", lineNo);
 				continue;
 			}
 		}
@@ -599,7 +599,7 @@ bool DictionaryParser::Parse(const wstring& _dictFile, vector<DictionaryPair>& _
 			pair.right.wstr = Conversion::ParseEscapeString(rightPart);
 		}
 		else {
-			if (_err == File::ERRORS::Show) wprintf(L"Ignoring dictionary line %zu: unknown right type '%s'\n", lineNo, currentRightType.c_str());
+			if (_err == File::ERRORS::Show) Log::Warn(L"Ignoring dictionary line %zu: unknown right type '%s'\n", lineNo, currentRightType.c_str());
 			continue;
 		}
 
@@ -682,7 +682,7 @@ number-base = dec
 	File::WriteANSIFile(keyMapFileName, bufferKeyMap, File::CONVERT_END_OF_LINE::Convert, File::ERRORS::Show);
 
 	wstring mess = L"Create: " + keyMapFileName + L"\n";
-	wprintf(mess.c_str());
+	Log::Info(mess.c_str());
 
 	return true;
 }

@@ -26,7 +26,7 @@ void MappingBuilder::Build(const vector<DictionaryPair>& _pairs, ConvType _type,
 		dstKind = TOKEN_KIND::WINDOWS_STRING;
 		break;
 	default:
-		wprintf(L"[Build] Unsupported ConvType %d – aborting\n", (int)_type);
+		Log::Error(L"[Build] Unsupported ConvType %d – aborting\n", (int)_type);
 		return;
 	}
 
@@ -77,25 +77,25 @@ void MappingBuilder::Build(const vector<DictionaryPair>& _pairs, ConvType _type,
 
 		// empty
 		if (srcKind == TOKEN_KIND::BYTE_SEQUENCE && me.srcBytes.empty()) {
-			wprintf(L"[Build] Pair %zu skipped – empty srcBytes\n", i);
+			Log::Warn(L"[Build] Pair %zu skipped – empty srcBytes\n", i);
 			continue;
 		}
 		if (srcKind == TOKEN_KIND::WINDOWS_STRING && me.srcW.empty()) {
-			wprintf(L"[Build] Pair %zu skipped – empty srcW\n", i);
+			Log::Warn(L"[Build] Pair %zu skipped – empty srcW\n", i);
 			continue;
 		}
 
 		if (dstKind == TOKEN_KIND::BYTE_SEQUENCE && me.dstBytes.empty()) {
-			wprintf(L"[Build] Pair %zu skipped – empty dstBytes\n", i);
+			Log::Warn(L"[Build] Pair %zu skipped – empty dstBytes\n", i);
 			continue;
 		}
 		if (dstKind == TOKEN_KIND::WINDOWS_STRING && me.dstW.empty()) {
-			wprintf(L"[Build] Pair %zu skipped – empty dstW\n", i);
+			Log::Warn(L"[Build] Pair %zu skipped – empty dstW\n", i);
 			continue;
 		}
 
 		_out.push_back(me);
 	}
 
-	wprintf(L"Built %zu mapping entries for conversion\n", _out.size());
+	Log::Info(L"Built %zu mapping entries for conversion\n", _out.size());
 }

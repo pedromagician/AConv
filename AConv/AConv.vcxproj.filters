@@ -22,6 +22,9 @@
     <ClInclude Include="Locale.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -67,6 +70,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Locale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">

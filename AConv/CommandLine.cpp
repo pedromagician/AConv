@@ -27,7 +27,7 @@ void CommandLine::AddParamBase(ParamDef& _p)
 	for (auto& nm : _p.names) {
 		wstring key = Conversion::ToLower(nm);
 		if (!localSet.insert(key).second) {
-			wprintf(L"Duplicate alias '%ls' in parameter definition\n", nm.c_str());
+			Log::Error(L"Duplicate alias '%ls' in parameter definition\n", nm.c_str());
 			throw runtime_error("Duplicate alias in parameter");
 		}
 	}
@@ -38,7 +38,7 @@ void CommandLine::AddParamBase(ParamDef& _p)
 
 		if (mAliasMap.count(key)) {
 			size_t other = mAliasMap[key];
-			wprintf(L"Parameter alias conflict: '%ls' is already used by parameter '%ls'\n", nm.c_str(), mParams[other].names[0].c_str());
+			Log::Error(L"Parameter alias conflict: '%ls' is already used by parameter '%ls'\n", nm.c_str(), mParams[other].names[0].c_str());
 			throw runtime_error("Duplicate parameter alias");
 		}
 		mAliasMap[key] = mParams.size();
@@ -231,7 +231,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 		}
 
 		if (!found) {
-			wprintf(L"Unknown parameter: -%s\n", arg.c_str());
+			Log::Error(L"Unknown parameter: -%s\n", arg.c_str());
 			return false;
 		}
 
@@ -246,7 +246,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 				else if (value == L"0" || Conversion::ToLower(value) == L"false" || Conversion::ToLower(value) == L"off")
 					*found->outBool = false;
 				else {
-					wprintf(L"Invalid boolean value: %s\n", value.c_str());
+					Log::Error(L"Invalid boolean value: %s\n", value.c_str());
 					return false;
 				}
 			}
@@ -258,7 +258,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			}
 			else {
 				if (i + 1 >= _argc || LooksLikeKnownFlag(_argv[i + 1])) {
-					wprintf(L"Missing value for parameter -%s\n", found->names[0].c_str());
+					Log::Error(L"Missing value for parameter -%s\n", found->names[0].c_str());
 					return false;
 				}
 				*found->outInt = _wtoi(_argv[++i]);
@@ -271,7 +271,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			}
 			else {
 				if (i + 1 >= _argc || LooksLikeKnownFlag(_argv[i + 1])) {
-					wprintf(L"Missing value for parameter -%s\n", found->names[0].c_str());
+					Log::Error(L"Missing value for parameter -%s\n", found->names[0].c_str());
 					return false;
 				}
 				*found->outString = _argv[++i];
@@ -287,7 +287,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			}
 			else {
 				if (i + 1 >= _argc || LooksLikeKnownFlag(_argv[i + 1])) {
-					wprintf(L"Missing value for parameter -%s\n", found->names[0].c_str());
+					Log::Error(L"Missing value for parameter -%s\n", found->names[0].c_str());
 					return false;
 				}
 				val = _argv[++i];
@@ -303,7 +303,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 				}
 			}
 			if (!matched) {
-				wprintf(L"Invalid enum value: %s\n", val.c_str());
+				Log::Error(L"Invalid enum value: %s\n", val.c_str());
 				return false;
 			}
 			break;
@@ -312,19 +312,19 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			if (!value.empty()) {
 				value = Conversion::TrimWhiteChar(value);
 				if (value.empty()) {
-					wprintf(L"Invalid char value for -%s\n", found->names[0].c_str());
+					Log::Error(L"Invalid char value for -%s\n", found->names[0].c_str());
 					return false;
 				}
 				*found->outChar = value[0];
 			}
 			else {
 				if (i + 1 >= _argc || LooksLikeKnownFlag(_argv[i + 1])) {
-					wprintf(L"Missing value for parameter -%s\n", found->names[0].c_str());
+					Log::Error(L"Missing value for parameter -%s\n", found->names[0].c_str());
 					return false;
 				}
 				wstring val = Conversion::TrimWhiteChar(_argv[++i]);
 				if (val.empty()) {
-					wprintf(L"Invalid char value for -%s\n", found->names[0].c_str());
+					Log::Error(L"Invalid char value for -%s\n", found->names[0].c_str());
 					return false;
 				}
 				*found->outChar = val[0];
@@ -339,7 +339,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			}
 			else {
 				if (i + 1 >= _argc || LooksLikeKnownFlag(_argv[i + 1])) {
-					wprintf(L"Missing value for color parameter -%s\n", found->names[0].c_str());
+					Log::Error(L"Missing value for color parameter -%s\n", found->names[0].c_str());
 					return false;
 				}
 				valStr = _argv[++i];
@@ -357,7 +357,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			}
 
 			if (valStr.size() < 6) {
-				wprintf(L"Invalid color format for -%s (expected #RRGGBB, RRGGBB, #RGB or RGB)\n", found->names[0].c_str());
+				Log::Error(L"Invalid color format for -%s (expected #RRGGBB, RRGGBB, #RGB or RGB)\n", found->names[0].c_str());
 				return false;
 			}
 
@@ -365,7 +365,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 
 			for (wchar_t c : hexPart) {
 				if (!iswxdigit(c)) {
-					wprintf(L"Invalid character in color value for -%s: %lc\n", found->names[0].c_str(), c);
+					Log::Error(L"Invalid character in color value for -%s: %lc\n", found->names[0].c_str(), c);
 					return false;
 				}
 			}
@@ -375,7 +375,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 			unsigned long b = wcstol(hexPart.substr(4, 2).c_str(), nullptr, 16);
 
 			if (r > 255 || g > 255 || b > 255) {
-				wprintf(L"Color values must be between 0 and 255\n");
+				Log::Info(L"Color values must be between 0 and 255\n");
 				return false;
 			}
 
@@ -394,7 +394,7 @@ bool CommandLine::ParseCommandLine(int _argc, wchar_t** _argv, int& _correctCoun
 		if (mParams[i].required == RequiredParam::Required) {
 			if (!mParams[i].seen) {
 				if (mHelp == false)
-					wprintf(L"Missing required parameter: -%s\n", mParams[i].names[0].c_str());
+					Log::Error(L"Missing required parameter: -%s\n", mParams[i].names[0].c_str());
 				return false;
 			}
 		}

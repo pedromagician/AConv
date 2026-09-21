@@ -33,14 +33,14 @@ void Converters::ConvertFromBytes(const vector<unsigned char>& _input, const vec
 				else _outW.push_back((wchar_t)b);
 
 				swprintf_s(buf, L"Unknown byte at pos %zu: '%c' (%u) (0x%02X)\n", pos, b, (unsigned)b, (unsigned)b);
-				wprintf(L"%s", buf);
+				Log::Warn(L"%s", buf);
 			}
 			else {
 				if (_type == ConvType::BYTE_TO_BYTE) _outBytes.push_back((unsigned char)_errorCharacter);
 				else _outW.push_back(_errorCharacter);
 
 				swprintf_s(buf, L"Unknown byte at pos %zu: '%c' (%u) (0x%02X)\n", pos, b, (unsigned)b, (unsigned)b);
-				wprintf(L"%s", buf);
+				Log::Warn(L"%s", buf);
 			}
 			++pos;
 		}
@@ -77,14 +77,14 @@ void Converters::ConvertFromWchars(const wstring& _input, const vector<MappingEn
 				else _outW.push_back(wc);
 
 				swprintf_s(buf, L"Unknown wchar at pos %zu: '%lc' (%u) (0x%04X)\n", pos, wc, (unsigned)wc, (unsigned)wc);
-				wprintf(L"%s", buf);
+				Log::Warn(L"%s", buf);
 			}
 			else {
 				if (_type == ConvType::WINDOWS_TO_BYTE) _outBytes.push_back((unsigned char)_errorCharacter);
 				else _outW.push_back(_errorCharacter);
 
 				swprintf_s(buf, L"Unknown wchar at pos %zu: '%lc' (%u) (0x%04X)\n", pos, wc, (unsigned)wc, (unsigned)wc);
-				wprintf(L"%s", buf);
+				Log::Warn(L"%s", buf);
 			}
 			++pos;
 		}

@@ -17,9 +17,9 @@ bool Convert::Dump(const wstring& _inputFile, const wstring& _outputFile, bool _
 			return false;
 	}
 	else {
-		wprintf(L"Opening input file (binary): %s\n", _inputFile.c_str());
+		Log::Info(L"Opening input file (binary): %s\n", _inputFile.c_str());
 		if (!File::ReadFile(_inputFile, inBytes, File::ERRORS::Show)) {
-			wprintf(L"Failed to read input file as bytes\n");
+			Log::Error(L"Failed to read input file as bytes\n");
 			return false;
 		}
 	}
@@ -39,16 +39,16 @@ bool Convert::Dump(const wstring& _inputFile, const wstring& _outputFile, bool _
 	buffer = ss.str();
 
 	if (_outputFile.empty()) {//CLIPBOARD
-		wprintf(L"Writing data to clipboard\n");
+		Log::Info(L"Writing data to clipboard\n");
 		if (!Clipboard::SetUnicode(buffer)) {
-			wprintf(L"Failed to write data to clipboard\n");
+			Log::Error(L"Failed to write data to clipboard\n");
 			return false;
 		}
 	}
 	else {
-		wprintf(L"Dump file: %s\n", _outputFile.c_str());
+		Log::Info(L"Dump file: %s\n", _outputFile.c_str());
 		if (!File::WriteFile(_outputFile, buffer, _outputFileType, File::CONVERT_END_OF_LINE::Convert, File::ERRORS::Show)) {
-			wprintf(L"Failed to write output file\n");
+			Log::Error(L"Failed to write output file\n");
 			return false;
 		}
 	}
@@ -67,7 +67,7 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 	bool toUpper = false;
 	wstring encoding;
 	if (!DictionaryParser::Parse(_dictionary, dictPairs, codePage, toLower, toUpper, _errorReportingLevel, _errorCharacter, encoding)) {
-		wprintf(L"Failed to parse dictionary\n");
+		Log::Error(L"Failed to parse dictionary\n");
 		return false;
 	}
 
@@ -79,7 +79,7 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 	vector<MappingEntry> mappings;
 	MappingBuilder::Build(dictPairs, _type, _switchLeftRightSidesOfDictionary, mappings);
 	if (mappings.empty() && emptyIsOk == false) {
-		wprintf(L"No usable mappings for requested conversion\n");
+		Log::Error(L"No usable mappings for requested conversion\n");
 		return false;
 	}
 
@@ -87,7 +87,7 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 	wstring inW;
 
 	if (_type == ConvType::UNKNOWN) {
-		wprintf(L"Unknown conversion mode\n");
+		Log::Error(L"Unknown conversion mode\n");
 		return false;
 	}
 	else if (_type == ConvType::BYTE_TO_BYTE || _type == ConvType::BYTE_TO_WINDOWS) {
@@ -96,9 +96,9 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 				return false;
 		}
 		else {
-			wprintf(L"Opening input file (binary): %s\n", _inputFile.c_str());
+			Log::Info(L"Opening input file (binary): %s\n", _inputFile.c_str());
 			if (!File::ReadFile(_inputFile, inBytes, File::ERRORS::Show)) {
-				wprintf(L"Failed to read input file as bytes\n");
+				Log::Error(L"Failed to read input file as bytes\n");
 				return false;
 			}
 		}
@@ -109,9 +109,9 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 				return false;
 		}
 		else {
-			wprintf(L"Opening input text file: %s\n", _inputFile.c_str());
+			Log::Info(L"Opening input text file: %s\n", _inputFile.c_str());
 			if (!File::ReadTextFile(_inputFile, inW, File::CONVERT_END_OF_LINE::Convert, File::ERRORS::Show)) {
-				wprintf(L"Failed to read input file\n");
+				Log::Error(L"Failed to read input file\n");
 				return false;
 			}
 		}
@@ -129,7 +129,7 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 	vector<unsigned char> outBytes;
 	wstring outW;
 
-	wprintf(L"Starting conversion...\n");
+	Log::Info(L"Starting conversion...\n");
 
 	switch (_type) {
 	case ConvType::BYTE_TO_BYTE:
@@ -137,16 +137,16 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 
 		if (_outputFile.empty()) {//CLIPBOARD
 			string str(outBytes.begin(), outBytes.end());
-			wprintf(L"Writing data to clipboard\n");
+			Log::Info(L"Writing data to clipboard\n");
 			if (!Clipboard::SetANSI(str)) {
-				wprintf(L"Failed to write data to clipboard\n");
+				Log::Error(L"Failed to write data to clipboard\n");
 				return false;
 			}
 		}
 		else {
-			wprintf(L"Writing output file (binary): %s\n", _outputFile.c_str());
+			Log::Info(L"Writing output file (binary): %s\n", _outputFile.c_str());
 			if (!File::WriteFile(_outputFile, outBytes, File::ERRORS::Show)) {
-				wprintf(L"Failed to write output file\n");
+				Log::Error(L"Failed to write output file\n");
 				return false;
 			}
 		}
@@ -156,16 +156,16 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 		Converters::ConvertFromBytes(inBytes, mappings, _type, _errorReportingLevel, _errorCharacter, outBytes, outW);
 
 		if (_outputFile.empty()) {//CLIPBOARD
-			wprintf(L"Writing data to clipboard\n");
+			Log::Info(L"Writing data to clipboard\n");
 			if (!Clipboard::SetUnicode(outW)) {
-				wprintf(L"Failed to write data to clipboard\n");
+				Log::Error(L"Failed to write data to clipboard\n");
 				return false;
 			}
 		}
 		else {
-			wprintf(L"Writing output file (text, %s): %s\n", File::String(_outputFileType).c_str(), _outputFile.c_str());
+			Log::Info(L"Writing output file (text, %s): %s\n", File::String(_outputFileType).c_str(), _outputFile.c_str());
 			if (!File::WriteFile(_outputFile, outW, _outputFileType, File::CONVERT_END_OF_LINE::Convert, File::ERRORS::Show)) {
-				wprintf(L"Failed to write output file\n");
+				Log::Error(L"Failed to write output file\n");
 				return false;
 			}
 		}
@@ -176,16 +176,16 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 
 		if (_outputFile.empty()) {//CLIPBOARD
 			string str(outBytes.begin(), outBytes.end());
-			wprintf(L"Writing data to clipboard\n");
+			Log::Info(L"Writing data to clipboard\n");
 			if (!Clipboard::SetANSI(str)) {
-				wprintf(L"Failed to write data to clipboard\n");
+				Log::Error(L"Failed to write data to clipboard\n");
 				return false;
 			}
 		}
 		else {
-			wprintf(L"Writing output file (binary): %s\n", _outputFile.c_str());
+			Log::Info(L"Writing output file (binary): %s\n", _outputFile.c_str());
 			if (!File::WriteFile(_outputFile, outBytes, File::ERRORS::Show)) {
-				wprintf(L"Failed to write output file\n");
+				Log::Error(L"Failed to write output file\n");
 				return false;
 			}
 		}
@@ -195,16 +195,16 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 		Converters::ConvertFromWchars(inW, mappings, _type, _errorReportingLevel, _errorCharacter, outBytes, outW);
 
 		if (_outputFile.empty()) {//CLIPBOARD
-			wprintf(L"Writing data to clipboard\n");
+			Log::Info(L"Writing data to clipboard\n");
 			if (!Clipboard::SetUnicode(outW)) {
-				wprintf(L"Failed to write data to clipboard\n");
+				Log::Error(L"Failed to write data to clipboard\n");
 				return false;
 			}
 		}
 		else {
-			wprintf(L"Writing output file (text, %s): %s\n", File::String(_outputFileType).c_str(), _outputFile.c_str());
+			Log::Info(L"Writing output file (text, %s): %s\n", File::String(_outputFileType).c_str(), _outputFile.c_str());
 			if (!File::WriteFile(_outputFile, outW, _outputFileType, File::CONVERT_END_OF_LINE::Convert, File::ERRORS::Show)) {
-				wprintf(L"Failed to write output file\n");
+				Log::Error(L"Failed to write output file\n");
 				return false;
 			}
 		}
@@ -212,10 +212,10 @@ bool Convert::Run(const wstring& _inputFile, const wstring& _outputFile, const w
 
 	case ConvType::UNKNOWN:
 	default:
-		wprintf(L"Unknown conversion mode\n");
+		Log::Error(L"Unknown conversion mode\n");
 		return false;
 	}
 
-	wprintf(L"Conversion finished\n");
+	Log::Warn(L"Conversion finished\n");
 	return true;
 }

@@ -6,7 +6,7 @@ bool Clipboard::ReadBytesFromClipboard(vector<unsigned char>& _outBytes)
 	string strTmp;
 	wstring wstrTmp;
 
-	wprintf(L"Reading bytes from the clipboard\n");
+	Log::Info(L"Reading bytes from the clipboard\n");
 	if (Clipboard::GetUnicode(wstrTmp)) {
 		strTmp = Conversion::ConvertWString2String(wstrTmp);
 		_outBytes.assign(strTmp.begin(), strTmp.end());
@@ -18,13 +18,13 @@ bool Clipboard::ReadBytesFromClipboard(vector<unsigned char>& _outBytes)
 		return true;
 	}
 
-	wprintf(L"Failed to read data from clipboard\n");
+	Log::Error(L"Failed to read data from clipboard\n");
 	return false;
 }
 
 bool Clipboard::ReadWstringFromClipboard(wstring& _buffer)
 {
-	wprintf(L"Reading text data from clipboard\n");
+	Log::Info(L"Reading text data from clipboard\n");
 	if (Clipboard::GetUnicode(_buffer))
 		return true;
 
@@ -39,7 +39,7 @@ bool Clipboard::ReadWstringFromClipboard(wstring& _buffer)
 		return true;
 	}
 
-	wprintf(L"Failed to read data from clipboard\n");
+	Log::Error(L"Failed to read data from clipboard\n");
 	return false;
 }
 

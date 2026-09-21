@@ -426,6 +426,7 @@ revision.bat
     <ClInclude Include="Converters.h" />
     <ClInclude Include="ConvTypes.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="DictionaryParser.h" />
     <ClInclude Include="DictionaryStructures.h" />
     <ClInclude Include="File.h" />
@@ -443,6 +444,7 @@ revision.bat
     <ClCompile Include="Convert.cpp" />
     <ClCompile Include="Converters.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="DictionaryParser.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="AConv.cpp" />
